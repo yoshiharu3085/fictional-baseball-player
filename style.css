@@ -201,3 +201,112 @@ row-gap: 16px;
 }
 
 }
+
+/* ========================================
+   選手一覧
+======================================== */
+
+.player-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background: #fafafa;
+}
+
+.player-item:active {
+  transform: scale(0.99);
+}
+
+.player-item-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.player-item-info {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+
+/* ========================================
+   サブボタン
+======================================== */
+
+.secondary-button {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 13px;
+  margin-top: 10px;
+
+  background: white;
+  color: #374151;
+
+  font-size: 15px;
+  font-weight: bold;
+}
+
+
+/* ========================================
+   キャリア
+======================================== */
+
+.career-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.career-header h2 {
+  margin-bottom: 6px;
+}
+
+.career-header p {
+  margin: 0;
+  color: #6b7280;
+}
+
+
+/* ========================================
+   成績表
+======================================== */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+th {
+  background: #172554;
+  color: white;
+  padding: 10px 8px;
+}
+
+td {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 10px 8px;
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+
+/* ========================================
+   年度成績追加画面
+======================================== */
+
+#seasonInputSection {
+  border-top: 4px solid #2563eb;
+}
