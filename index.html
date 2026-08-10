@@ -1,40 +1,537 @@
-<!DOCTYPE html><html lang="ja">
+<!DOCTYPE html>
+<html lang="ja">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>架空野球選手メーカー</title>
-  <link rel="stylesheet" href="style.css">
-</head><body>  <header class="header">
-    <h1>⚾ 架空野球選手メーカー</h1>
-    <p>数字を入力して、架空の野球選手を作ろう</p>
-  </header>  <main class="container"><!-- 選手情報 -->
-<section class="card">
-  <h2>選手情報</h2>
 
-  <div class="form-group">
-    <label for="playerName">選手名</label>
-    <input type="text" id="playerName" placeholder="例：山田 太郎">
-  </div>
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+</head>
 
-  <div class="form-group">
-    <label for="year">年度</label>
-    <input type="number" id="year" value="2026">
-  </div>
 
-  <div class="form-group">
-    <label for="team">所属</label>
-    <input type="text" id="team" placeholder="例：東京〇〇">
-  </div>
+<body>
 
-  <div class="form-group">
-    <label for="position">守備位置</label>
-    <select id="position">
-      <option value="投手">投手</option>
-      <option value="捕手">捕手</option>
-      <option value="一塁手">一塁手</option>
-      <option value="二塁手">二塁手</option>
-      <option value="三塁手">三塁手</option>
-      <option value="遊撃手" selected>遊撃手</option>
+<header class="header">
+
+  <h1>⚾ 架空野球選手メーカー</h1>
+
+  <p>
+    架空の野球選手を作ってキャリアを記録しよう
+  </p>
+
+</header>
+
+
+<main class="container">
+
+
+  <!-- ====================================
+       選手一覧
+  ===================================== -->
+
+  <section
+    id="playerListSection"
+    class="card"
+  >
+
+    <h2>登録選手</h2>
+
+    <div id="playerList"></div>
+
+    <button
+      id="newPlayerButton"
+      class="create-button"
+    >
+      ＋ 新しい選手を作る
+    </button>
+
+  </section>
+
+
+
+  <!-- ====================================
+       選手作成・年度成績入力
+  ===================================== -->
+
+  <section
+    id="editorSection"
+    class="hidden"
+  >
+
+    <section class="card">
+
+      <h2 id="editorTitle">
+        新しい選手を作る
+      </h2>
+
+
+      <div class="form-group">
+
+        <label for="playerName">
+          選手名
+        </label>
+
+        <input
+          type="text"
+          id="playerName"
+          placeholder="例：山田 太郎"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="team">
+          所属
+        </label>
+
+        <input
+          type="text"
+          id="team"
+          placeholder="例：東京〇〇"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="position">
+          守備位置
+        </label>
+
+        <select id="position">
+
+          <option value="投手">
+            投手
+          </option>
+
+          <option value="捕手">
+            捕手
+          </option>
+
+          <option value="一塁手">
+            一塁手
+          </option>
+
+          <option value="二塁手">
+            二塁手
+          </option>
+
+          <option value="三塁手">
+            三塁手
+          </option>
+
+          <option
+            value="遊撃手"
+            selected
+          >
+            遊撃手
+          </option>
+
+          <option value="左翼手">
+            左翼手
+          </option>
+
+          <option value="中堅手">
+            中堅手
+          </option>
+
+          <option value="右翼手">
+            右翼手
+          </option>
+
+          <option value="指名打者">
+            指名打者
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        id="savePlayerButton"
+        class="create-button"
+      >
+        選手を保存
+      </button>
+
+
+      <button
+        id="cancelEditButton"
+        class="secondary-button"
+      >
+        キャンセル
+      </button>
+
+    </section>
+
+
+
+    <!-- 年度成績入力 -->
+
+    <section
+      id="seasonInputSection"
+      class="card hidden"
+    >
+
+      <h2>年度成績を追加</h2>
+
+
+      <div class="form-group">
+
+        <label for="year">
+          年度
+        </label>
+
+        <input
+          type="number"
+          id="year"
+          value="2026"
+          min="1900"
+          max="2100"
+        >
+
+      </div>
+
+
+      <div class="stats-grid">
+
+
+        <div class="form-group">
+
+          <label for="games">
+            試合
+          </label>
+
+          <input
+            type="number"
+            id="games"
+            value="143"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="plateAppearances">
+            打席
+          </label>
+
+          <input
+            type="number"
+            id="plateAppearances"
+            value="612"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="atBats">
+            打数
+          </label>
+
+          <input
+            type="number"
+            id="atBats"
+            value="550"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="hits">
+            安打
+          </label>
+
+          <input
+            type="number"
+            id="hits"
+            value="168"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="doubles">
+            二塁打
+          </label>
+
+          <input
+            type="number"
+            id="doubles"
+            value="31"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="triples">
+            三塁打
+          </label>
+
+          <input
+            type="number"
+            id="triples"
+            value="4"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="homeRuns">
+            本塁打
+          </label>
+
+          <input
+            type="number"
+            id="homeRuns"
+            value="32"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="rbi">
+            打点
+          </label>
+
+          <input
+            type="number"
+            id="rbi"
+            value="98"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="walks">
+            四球
+          </label>
+
+          <input
+            type="number"
+            id="walks"
+            value="55"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="hbp">
+            死球
+          </label>
+
+          <input
+            type="number"
+            id="hbp"
+            value="5"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="sacrificeFlies">
+            犠飛
+          </label>
+
+          <input
+            type="number"
+            id="sacrificeFlies"
+            value="3"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="strikeouts">
+            三振
+          </label>
+
+          <input
+            type="number"
+            id="strikeouts"
+            value="72"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="stolenBases">
+            盗塁
+          </label>
+
+          <input
+            type="number"
+            id="stolenBases"
+            value="18"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="caughtStealing">
+            盗塁死
+          </label>
+
+          <input
+            type="number"
+            id="caughtStealing"
+            value="4"
+            min="0"
+          >
+
+        </div>
+
+
+      </div>
+
+
+      <button
+        id="saveSeasonButton"
+        class="create-button"
+      >
+        この年度の成績を登録
+      </button>
+
+    </section>
+
+
+    <!-- ====================================
+         キャリア表示
+    ===================================== -->
+
+    <section
+      id="careerSection"
+      class="card hidden"
+    >
+
+      <div class="career-header">
+
+        <h2 id="careerName"></h2>
+
+        <p id="careerInfo"></p>
+
+      </div>
+
+
+      <h3>年度別成績</h3>
+
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>年度</th>
+              <th>G</th>
+              <th>AVG</th>
+              <th>HR</th>
+              <th>RBI</th>
+              <th>SB</th>
+              <th>OPS</th>
+            </tr>
+
+          </thead>
+
+
+          <tbody
+            id="careerTableBody"
+          ></tbody>
+
+        </table>
+
+      </div>
+
+
+      <button
+        id="addSeasonButton"
+        class="create-button"
+      >
+        ＋ 年度成績を追加
+      </button>
+
+
+      <button
+        id="backToPlayersButton"
+        class="secondary-button"
+      >
+        選手一覧に戻る
+      </button>
+
+    </section>
+
+
+  </section>
+
+
+  <!-- エラー -->
+
+  <div
+    id="error"
+    class="error hidden"
+  ></div>
+
+
+</main>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>      <option value="遊撃手" selected>遊撃手</option>
       <option value="左翼手">左翼手</option>
       <option value="中堅手">中堅手</option>
       <option value="右翼手">右翼手</option>
