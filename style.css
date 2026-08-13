@@ -310,3 +310,145 @@ tr:nth-child(even) {
 #seasonInputSection {
   border-top: 4px solid #2563eb;
 }
+
+
+/* ========================================
+   キャリア表示
+======================================== */
+
+.career-block {
+  margin-bottom: 28px;
+}
+
+.career-block h3 {
+  margin-bottom: 14px;
+  font-size: 18px;
+}
+
+
+/* ========================================
+   通算成績
+======================================== */
+
+.career-total-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.career-total-grid div {
+  background: #f3f4f6;
+  border-radius: 10px;
+  padding: 12px 5px;
+  text-align: center;
+}
+
+.career-total-grid strong {
+  display: block;
+  font-size: 20px;
+}
+
+.career-total-grid span {
+  display: block;
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+
+.career-rate-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.career-rate-grid div {
+  background: #eff6ff;
+  border-radius: 10px;
+  padding: 12px 5px;
+  text-align: center;
+}
+
+.career-rate-grid strong {
+  display: block;
+  font-size: 20px;
+}
+
+.career-rate-grid span {
+  display: block;
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+
+/* ========================================
+   キャリアハイ
+======================================== */
+
+.career-high-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.career-high-grid div {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.career-high-grid span {
+  display: block;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.career-high-grid strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 24px;
+}
+
+.career-high-grid small {
+  display: block;
+  margin-top: 3px;
+  color: #6b7280;
+}
+
+
+/* ========================================
+   グラフ
+======================================== */
+
+.chart-container {
+  margin-bottom: 24px;
+}
+
+.chart-container h4 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 220px !important;
+}
+
+
+/* ========================================
+   スマホ対応
+======================================== */
+
+@media (max-width: 400px) {
+
+  .career-total-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .career-rate-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
