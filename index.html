@@ -447,75 +447,234 @@
 
 
     <!-- ====================================
-         キャリア表示
-    ===================================== -->
+     キャリア表示
+===================================== -->
 
-    <section
-      id="careerSection"
-      class="card hidden"
-    >
+<section
+  id="careerSection"
+  class="card hidden"
+>
 
-      <div class="career-header">
+  <div class="career-header">
 
-        <h2 id="careerName"></h2>
+    <h2 id="careerName"></h2>
 
-        <p id="careerInfo"></p>
+    <p id="careerInfo"></p>
 
+  </div>
+
+
+  <!-- ====================================
+       通算成績
+  ===================================== -->
+
+  <div class="career-block">
+
+    <h3>通算成績</h3>
+
+    <div class="career-total-grid">
+
+      <div>
+        <strong id="totalGames">0</strong>
+        <span>試合</span>
       </div>
 
-
-      <h3>年度別成績</h3>
-
-
-      <div class="table-wrapper">
-
-        <table>
-
-          <thead>
-
-            <tr>
-              <th>年度</th>
-              <th>G</th>
-              <th>AVG</th>
-              <th>HR</th>
-              <th>RBI</th>
-              <th>SB</th>
-              <th>OPS</th>
-            </tr>
-
-          </thead>
-
-
-          <tbody
-            id="careerTableBody"
-          ></tbody>
-
-        </table>
-
+      <div>
+        <strong id="totalAtBats">0</strong>
+        <span>打数</span>
       </div>
 
+      <div>
+        <strong id="totalHits">0</strong>
+        <span>安打</span>
+      </div>
 
-      <button
-        id="addSeasonButton"
-        class="create-button"
-      >
-        ＋ 年度成績を追加
-      </button>
+      <div>
+        <strong id="totalHomeRuns">0</strong>
+        <span>本塁打</span>
+      </div>
+
+      <div>
+        <strong id="totalRBI">0</strong>
+        <span>打点</span>
+      </div>
+
+      <div>
+        <strong id="totalStolenBases">0</strong>
+        <span>盗塁</span>
+      </div>
+
+    </div>
 
 
-      <button
-        id="backToPlayersButton"
-        class="secondary-button"
-      >
-        選手一覧に戻る
-      </button>
+    <div class="career-rate-grid">
 
-    </section>
+      <div>
+        <strong id="totalAVG">.000</strong>
+        <span>AVG</span>
+      </div>
+
+      <div>
+        <strong id="totalOBP">.000</strong>
+        <span>OBP</span>
+      </div>
+
+      <div>
+        <strong id="totalSLG">.000</strong>
+        <span>SLG</span>
+      </div>
+
+      <div>
+        <strong id="totalOPS">.000</strong>
+        <span>OPS</span>
+      </div>
+
+    </div>
+
+  </div>
 
 
-  </section>
+
+  <!-- ====================================
+       キャリアハイ
+  ===================================== -->
+
+  <div class="career-block">
+
+    <h3>キャリアハイ</h3>
+
+    <div class="career-high-grid">
+
+      <div>
+        <span>打率</span>
+        <strong id="careerHighAVG">.000</strong>
+        <small id="careerHighAVGYear"></small>
+      </div>
+
+      <div>
+        <span>本塁打</span>
+        <strong id="careerHighHR">0</strong>
+        <small id="careerHighHRYear"></small>
+      </div>
+
+      <div>
+        <span>打点</span>
+        <strong id="careerHighRBI">0</strong>
+        <small id="careerHighRBIYear"></small>
+      </div>
+
+      <div>
+        <span>盗塁</span>
+        <strong id="careerHighSB">0</strong>
+        <small id="careerHighSBYear"></small>
+      </div>
+
+      <div>
+        <span>OPS</span>
+        <strong id="careerHighOPS">.000</strong>
+        <small id="careerHighOPSYear"></small>
+      </div>
+
+    </div>
+
+  </div>
 
 
+
+  <!-- ====================================
+       年度別グラフ
+  ===================================== -->
+
+  <div class="career-block">
+
+    <h3>年度別推移</h3>
+
+    <div class="chart-container">
+
+      <h4>打率</h4>
+
+      <canvas id="avgChart"></canvas>
+
+    </div>
+
+
+    <div class="chart-container">
+
+      <h4>本塁打</h4>
+
+      <canvas id="hrChart"></canvas>
+
+    </div>
+
+
+    <div class="chart-container">
+
+      <h4>OPS</h4>
+
+      <canvas id="opsChart"></canvas>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ====================================
+       年度別成績
+  ===================================== -->
+
+  <div class="career-block">
+
+    <h3>年度別成績</h3>
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>年度</th>
+            <th>G</th>
+            <th>AVG</th>
+            <th>HR</th>
+            <th>RBI</th>
+            <th>SB</th>
+            <th>OPS</th>
+          </tr>
+
+        </thead>
+
+
+        <tbody
+          id="careerTableBody"
+        ></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+
+  <button
+    id="addSeasonButton"
+    class="create-button"
+  >
+    ＋ 年度成績を追加
+  </button>
+
+
+  <button
+    id="backToPlayersButton"
+    class="secondary-button"
+  >
+    選手一覧に戻る
+  </button>
+
+</section>
+    
   <!-- エラー -->
 
   <div
