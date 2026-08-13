@@ -1710,7 +1710,7 @@ const seasons =
 
     row.innerHTML =
       `
-        <td colspan="7">
+        <td colspan="14">
           まだ年度成績がありません
         </td>
       `;
@@ -1724,6 +1724,8 @@ const seasons =
 
   else {
 
+    // 年度別成績を表示
+
     seasons.forEach(
       function(season) {
 
@@ -1736,35 +1738,35 @@ const seasons =
         row.innerHTML =
           `
             <td>${season.year}</td>
-        
+
             <td>${season.games}</td>
-        
+
             <td>${season.atBats}</td>
-        
+
             <td>${season.hits}</td>
-        
+
             <td>${season.doubles}</td>
-        
+
             <td>${season.triples}</td>
-        
+
             <td>${season.walks}</td>
-        
+
             <td>${season.hbp}</td>
-        
+
             <td>${season.sacrificeFlies}</td>
-        
+
             <td>
               ${formatRate(
                 season.avg
               )}
             </td>
-        
+
             <td>${season.homeRuns}</td>
-        
+
             <td>${season.rbi}</td>
-        
+
             <td>${season.stolenBases}</td>
-        
+
             <td>
               ${formatRate(
                 season.ops
@@ -1780,56 +1782,74 @@ const seasons =
       }
     );
 
-          // 通算成績の行を追加
-      const careerTotals =
-        calculateCareerTotals(seasons);
-      
-      const totalRow =
-        document.createElement("tr");
-      
-      totalRow.className =
-        "career-total-row";
-      
-      totalRow.innerHTML =
-        `
-          <th>通算</th>
-      
-          <th>${careerTotals.games}</th>
-      
-          <th>${careerTotals.atBats}</th>
-      
-          <th>${careerTotals.hits}</th>
-      
-          <th>${careerTotals.doubles}</th>
-      
-          <th>${careerTotals.triples}</th>
-      
-          <th>${careerTotals.walks}</th>
-      
-          <th>${careerTotals.hbp}</th>
-      
-          <th>${careerTotals.sacrificeFlies}</th>
-      
-          <th>
+
+    // ========================================
+    // 通算成績を一番下に追加
+    // ========================================
+
+    const careerTotals =
+      calculateCareerTotals(
+        seasons
+      );
+
+
+    const totalRow =
+      document.createElement(
+        "tr"
+      );
+
+
+    totalRow.className =
+      "career-total-row";
+
+
+    totalRow.innerHTML =
+      `
+        <td><strong>通算</strong></td>
+
+        <td><strong>${careerTotals.games}</strong></td>
+
+        <td><strong>${careerTotals.atBats}</strong></td>
+
+        <td><strong>${careerTotals.hits}</strong></td>
+
+        <td><strong>${careerTotals.doubles}</strong></td>
+
+        <td><strong>${careerTotals.triples}</strong></td>
+
+        <td><strong>${careerTotals.walks}</strong></td>
+
+        <td><strong>${careerTotals.hbp}</strong></td>
+
+        <td><strong>${careerTotals.sacrificeFlies}</strong></td>
+
+        <td>
+          <strong>
             ${formatRate(
               careerTotals.avg
             )}
-          </th>
-      
-          <th>${careerTotals.homeRuns}</th>
-      
-          <th>${careerTotals.rbi}</th>
-      
-          <th>${careerTotals.stolenBases}</th>
-      
-          <th>
+          </strong>
+        </td>
+
+        <td><strong>${careerTotals.homeRuns}</strong></td>
+
+        <td><strong>${careerTotals.rbi}</strong></td>
+
+        <td><strong>${careerTotals.stolenBases}</strong></td>
+
+        <td>
+          <strong>
             ${formatRate(
               careerTotals.ops
             )}
-          </th>
-        `;
-      
-      tbody.appendChild(totalRow);
+          </strong>
+        </td>
+      `;
+
+
+    tbody.appendChild(
+      totalRow
+    );
 
   }
 
