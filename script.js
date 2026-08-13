@@ -1780,6 +1780,57 @@ const seasons =
       }
     );
 
+          // 通算成績の行を追加
+      const careerTotals =
+        calculateCareerTotals(seasons);
+      
+      const totalRow =
+        document.createElement("tr");
+      
+      totalRow.className =
+        "career-total-row";
+      
+      totalRow.innerHTML =
+        `
+          <th>通算</th>
+      
+          <th>${careerTotals.games}</th>
+      
+          <th>${careerTotals.atBats}</th>
+      
+          <th>${careerTotals.hits}</th>
+      
+          <th>${careerTotals.doubles}</th>
+      
+          <th>${careerTotals.triples}</th>
+      
+          <th>${careerTotals.walks}</th>
+      
+          <th>${careerTotals.hbp}</th>
+      
+          <th>${careerTotals.sacrificeFlies}</th>
+      
+          <th>
+            ${formatRate(
+              careerTotals.avg
+            )}
+          </th>
+      
+          <th>${careerTotals.homeRuns}</th>
+      
+          <th>${careerTotals.rbi}</th>
+      
+          <th>${careerTotals.stolenBases}</th>
+      
+          <th>
+            ${formatRate(
+              careerTotals.ops
+            )}
+          </th>
+        `;
+      
+      tbody.appendChild(totalRow);
+
   }
 
 
