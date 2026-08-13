@@ -1,20 +1,20 @@
 // ========================================
-// 架空野球選手メーカー V0.2
+// 架空野球選手メーカー V0.3
+// 通算成績・キャリアハイ・グラフ対応
 // ========================================
 
 
-// ========================================
-// データ保存先
-// ========================================
+const STORAGE_KEY =
+  "fictionalBaseballPlayers";
 
-const STORAGE_KEY = "fictionalBaseballPlayers";
-
-
-// ========================================
-// 現在選択している選手
-// ========================================
 
 let currentPlayerId = null;
+
+
+// Chart.jsのグラフを保持
+let avgChart = null;
+let hrChart = null;
+let opsChart = null;
 
 
 // ========================================
@@ -22,44 +22,55 @@ let currentPlayerId = null;
 // ========================================
 
 const playerListSection =
-  document.getElementById("playerListSection");
+  document.getElementById(
+    "playerListSection"
+  );
 
 const playerList =
-  document.getElementById("playerList");
+  document.getElementById(
+    "playerList"
+  );
 
 const editorSection =
-  document.getElementById("editorSection");
+  document.getElementById(
+    "editorSection"
+  );
 
 const seasonInputSection =
-  document.getElementById("seasonInputSection");
+  document.getElementById(
+    "seasonInputSection"
+  );
 
 const careerSection =
-  document.getElementById("careerSection");
+  document.getElementById(
+    "careerSection"
+  );
 
 const error =
-  document.getElementById("error");
+  document.getElementById(
+    "error"
+  );
 
 
 // ========================================
-// LocalStorageから選手データを取得
+// LocalStorage
 // ========================================
 
 function getPlayers() {
 
   const data =
-    localStorage.getItem(STORAGE_KEY);
+    localStorage.getItem(
+      STORAGE_KEY
+    );
 
   if (!data) {
     return [];
   }
 
   return JSON.parse(data);
+
 }
 
-
-// ========================================
-// 選手データを保存
-// ========================================
 
 function savePlayers(players) {
 
@@ -79,7 +90,9 @@ function generateId() {
 
   return (
     Date.now().toString() +
-    Math.random().toString(16).slice(2)
+    Math.random()
+      .toString(16)
+      .slice(2)
   );
 
 }
@@ -101,7 +114,7 @@ function getNumber(id) {
 
 
 // ========================================
-// 打率などを小数3桁にする
+// 成績表示用フォーマット
 // ========================================
 
 function formatRate(value) {
@@ -163,7 +176,7 @@ function calculateSeason() {
 
 
   // ========================================
-  // 入力値チェック
+  // 入力チェック
   // ========================================
 
   if (hits > atBats) {
@@ -193,7 +206,10 @@ function calculateSeason() {
   }
 
 
-  if (strikeouts > plateAppearances) {
+  if (
+    strikeouts >
+    plateAppearances
+  ) {
 
     showError(
       "三振数が打席数を超えています。"
@@ -204,7 +220,10 @@ function calculateSeason() {
   }
 
 
-  if (plateAppearances < atBats) {
+  if (
+    plateAppearances <
+    atBats
+  ) {
 
     showError(
       "打席数が打数より少なくなっています。"
@@ -219,14 +238,10 @@ function calculateSeason() {
   // 打率
   // ========================================
 
-  let avg = 0;
-
-  if (atBats > 0) {
-
-    avg =
-      hits / atBats;
-
-  }
+  const avg =
+    atBats > 0
+      ? hits / atBats
+      : 0;
 
 
   // ========================================
@@ -255,21 +270,15 @@ function calculateSeason() {
   // 長打率
   // ========================================
 
-  let slg = 0;
-
-  if (atBats > 0) {
-
-    slg =
-      totalBases / atBats;
-
-  }
+  const slg =
+    atBats > 0
+      ? totalBases / atBats
+      : 0;
 
 
   // ========================================
   // 出塁率
   // ========================================
-
-  let obp = 0;
 
   const denominator =
     atBats +
@@ -277,17 +286,15 @@ function calculateSeason() {
     hbp +
     sacrificeFlies;
 
-  if (denominator > 0) {
 
-    obp =
-      (
-        hits +
-        walks +
-        hbp
-      ) /
-      denominator;
-
-  }
+  const obp =
+    denominator > 0
+      ? (
+          hits +
+          walks +
+          hbp
+        ) / denominator
+      : 0;
 
 
   // ========================================
@@ -297,10 +304,6 @@ function calculateSeason() {
   const ops =
     obp + slg;
 
-
-  // ========================================
-  // 年度データとして返す
-  // ========================================
 
   return {
 
@@ -349,7 +352,7 @@ function calculateSeason() {
 
 
 // ========================================
-// エラー表示
+// エラー
 // ========================================
 
 function showError(message) {
@@ -364,10 +367,6 @@ function showError(message) {
 }
 
 
-// ========================================
-// エラーを消す
-// ========================================
-
 function clearError() {
 
   error.classList.add(
@@ -378,7 +377,7 @@ function clearError() {
 
 
 // ========================================
-// 選手一覧を表示
+// 選手一覧
 // ========================================
 
 function renderPlayerList() {
@@ -387,15 +386,18 @@ function renderPlayerList() {
     getPlayers();
 
 
-  playerList.innerHTML = "";
+  playerList.innerHTML =
+    "";
 
 
-  // 選手がいない場合
-
-  if (players.length === 0) {
+  if (
+    players.length === 0
+  ) {
 
     const message =
-      document.createElement("p");
+      document.createElement(
+        "p"
+      );
 
     message.textContent =
       "まだ選手が登録されていません。";
@@ -412,20 +414,22 @@ function renderPlayerList() {
   }
 
 
-  // 選手を表示
-
   players.forEach(
     function(player) {
 
       const item =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       item.className =
         "player-item";
 
 
       const name =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       name.className =
         "player-item-name";
@@ -435,7 +439,9 @@ function renderPlayerList() {
 
 
       const info =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       info.className =
         "player-item-info";
@@ -477,7 +483,7 @@ function renderPlayerList() {
 
 
 // ========================================
-// 新しい選手を作る
+// 新しい選手
 // ========================================
 
 function startNewPlayer() {
@@ -488,17 +494,20 @@ function startNewPlayer() {
 
   document.getElementById(
     "playerName"
-  ).value = "";
+  ).value =
+    "";
 
 
   document.getElementById(
     "team"
-  ).value = "";
+  ).value =
+    "";
 
 
   document.getElementById(
     "position"
-  ).value = "遊撃手";
+  ).value =
+    "遊撃手";
 
 
   document.getElementById(
@@ -545,7 +554,7 @@ function startNewPlayer() {
 
 
 // ========================================
-// 選手を保存
+// 選手保存
 // ========================================
 
 function savePlayer() {
@@ -611,8 +620,8 @@ function savePlayer() {
     currentPlayerId =
       newPlayer.id;
 
-
   }
+
 
   // 既存選手
 
@@ -622,8 +631,10 @@ function savePlayer() {
       players.find(
         function(p) {
 
-          return p.id ===
-            currentPlayerId;
+          return (
+            p.id ===
+            currentPlayerId
+          );
 
         }
       );
@@ -650,11 +661,6 @@ function savePlayer() {
   );
 
 
-  clearError();
-
-
-  // 編集画面を更新
-
   document.getElementById(
     "editorTitle"
   ).textContent =
@@ -667,8 +673,6 @@ function savePlayer() {
     "選手情報を更新";
 
 
-  // 年度成績入力を表示
-
   seasonInputSection.classList.remove(
     "hidden"
   );
@@ -677,6 +681,9 @@ function savePlayer() {
   renderCareer(
     currentPlayerId
   );
+
+
+  clearError();
 
 }
 
@@ -699,8 +706,10 @@ function openPlayer(playerId) {
     players.find(
       function(p) {
 
-        return p.id ===
-          playerId;
+        return (
+          p.id ===
+          playerId
+        );
 
       }
     );
@@ -710,8 +719,6 @@ function openPlayer(playerId) {
     return;
   }
 
-
-  // 選手情報を入力欄にセット
 
   document.getElementById(
     "playerName"
@@ -777,7 +784,7 @@ function openPlayer(playerId) {
 
 
 // ========================================
-// 年度成績を保存
+// 年度成績保存
 // ========================================
 
 function saveSeason() {
@@ -821,8 +828,10 @@ function saveSeason() {
     players.find(
       function(p) {
 
-        return p.id ===
-          currentPlayerId;
+        return (
+          p.id ===
+          currentPlayerId
+        );
 
       }
     );
@@ -833,22 +842,22 @@ function saveSeason() {
   }
 
 
-  // ========================================
-  // 同じ年度が存在するかチェック
-  // ========================================
-
   const existingIndex =
     player.seasons.findIndex(
       function(s) {
 
-        return s.year ===
-          season.year;
+        return (
+          s.year ===
+          season.year
+        );
 
       }
     );
 
 
-  if (existingIndex !== -1) {
+  if (
+    existingIndex !== -1
+  ) {
 
     const overwrite =
       confirm(
@@ -876,13 +885,13 @@ function saveSeason() {
   }
 
 
-  // 年度順に並べる
-
   player.seasons.sort(
     function(a, b) {
 
-      return a.year -
-        b.year;
+      return (
+        a.year -
+        b.year
+      );
 
     }
   );
@@ -909,10 +918,696 @@ function saveSeason() {
 
 
 // ========================================
-// キャリア表示
+// 通算成績を計算
 // ========================================
 
-function renderCareer(playerId) {
+function calculateCareerTotals(
+  seasons
+) {
+
+  const total = {
+
+    games: 0,
+
+    plateAppearances: 0,
+
+    atBats: 0,
+
+    hits: 0,
+
+    doubles: 0,
+
+    triples: 0,
+
+    homeRuns: 0,
+
+    rbi: 0,
+
+    walks: 0,
+
+    hbp: 0,
+
+    sacrificeFlies: 0,
+
+    strikeouts: 0,
+
+    stolenBases: 0,
+
+    caughtStealing: 0
+
+  };
+
+
+  // 各年度を合計
+
+  seasons.forEach(
+    function(season) {
+
+      total.games +=
+        season.games || 0;
+
+      total.plateAppearances +=
+        season.plateAppearances || 0;
+
+      total.atBats +=
+        season.atBats || 0;
+
+      total.hits +=
+        season.hits || 0;
+
+      total.doubles +=
+        season.doubles || 0;
+
+      total.triples +=
+        season.triples || 0;
+
+      total.homeRuns +=
+        season.homeRuns || 0;
+
+      total.rbi +=
+        season.rbi || 0;
+
+      total.walks +=
+        season.walks || 0;
+
+      total.hbp +=
+        season.hbp || 0;
+
+      total.sacrificeFlies +=
+        season.sacrificeFlies || 0;
+
+      total.strikeouts +=
+        season.strikeouts || 0;
+
+      total.stolenBases +=
+        season.stolenBases || 0;
+
+      total.caughtStealing +=
+        season.caughtStealing || 0;
+
+    }
+  );
+
+
+  // 通算打率
+
+  total.avg =
+    total.atBats > 0
+      ? total.hits /
+        total.atBats
+      : 0;
+
+
+  // 通算単打
+
+  const singles =
+    total.hits -
+    total.doubles -
+    total.triples -
+    total.homeRuns;
+
+
+  // 通算塁打
+
+  const totalBases =
+    singles +
+    total.doubles * 2 +
+    total.triples * 3 +
+    total.homeRuns * 4;
+
+
+  // 通算長打率
+
+  total.slg =
+    total.atBats > 0
+      ? totalBases /
+        total.atBats
+      : 0;
+
+
+  // 通算出塁率
+
+  const obpDenominator =
+    total.atBats +
+    total.walks +
+    total.hbp +
+    total.sacrificeFlies;
+
+
+  total.obp =
+    obpDenominator > 0
+      ? (
+          total.hits +
+          total.walks +
+          total.hbp
+        ) /
+        obpDenominator
+      : 0;
+
+
+  // 通算OPS
+
+  total.ops =
+    total.obp +
+    total.slg;
+
+
+  return total;
+
+}
+
+
+// ========================================
+// キャリアハイ
+// ========================================
+
+function calculateCareerHigh(
+  seasons
+) {
+
+  if (
+    seasons.length === 0
+  ) {
+
+    return null;
+
+  }
+
+
+  return {
+
+    avg:
+      seasons.reduce(
+        function(best, season) {
+
+          return (
+            season.avg >
+            best.avg
+          )
+            ? season
+            : best;
+
+        },
+        seasons[0]
+      ),
+
+    homeRuns:
+      seasons.reduce(
+        function(best, season) {
+
+          return (
+            season.homeRuns >
+            best.homeRuns
+          )
+            ? season
+            : best;
+
+        },
+        seasons[0]
+      ),
+
+    rbi:
+      seasons.reduce(
+        function(best, season) {
+
+          return (
+            season.rbi >
+            best.rbi
+          )
+            ? season
+            : best;
+
+        },
+        seasons[0]
+      ),
+
+    stolenBases:
+      seasons.reduce(
+        function(best, season) {
+
+          return (
+            season.stolenBases >
+            best.stolenBases
+          )
+            ? season
+            : best;
+
+        },
+        seasons[0]
+      ),
+
+    ops:
+      seasons.reduce(
+        function(best, season) {
+
+          return (
+            season.ops >
+            best.ops
+          )
+            ? season
+            : best;
+
+        },
+        seasons[0]
+      )
+
+  };
+
+}
+
+
+// ========================================
+// 通算成績を画面に表示
+// ========================================
+
+function renderCareerTotals(
+  totals
+) {
+
+  document.getElementById(
+    "totalGames"
+  ).textContent =
+    totals.games;
+
+
+  document.getElementById(
+    "totalAtBats"
+  ).textContent =
+    totals.atBats;
+
+
+  document.getElementById(
+    "totalHits"
+  ).textContent =
+    totals.hits;
+
+
+  document.getElementById(
+    "totalHomeRuns"
+  ).textContent =
+    totals.homeRuns;
+
+
+  document.getElementById(
+    "totalRBI"
+  ).textContent =
+    totals.rbi;
+
+
+  document.getElementById(
+    "totalStolenBases"
+  ).textContent =
+    totals.stolenBases;
+
+
+  document.getElementById(
+    "totalAVG"
+  ).textContent =
+    formatRate(
+      totals.avg
+    );
+
+
+  document.getElementById(
+    "totalOBP"
+  ).textContent =
+    formatRate(
+      totals.obp
+    );
+
+
+  document.getElementById(
+    "totalSLG"
+  ).textContent =
+    formatRate(
+      totals.slg
+    );
+
+
+  document.getElementById(
+    "totalOPS"
+  ).textContent =
+    formatRate(
+      totals.ops
+    );
+
+}
+
+
+// ========================================
+// キャリアハイ表示
+// ========================================
+
+function renderCareerHigh(
+  high
+) {
+
+  if (!high) {
+    return;
+  }
+
+
+  document.getElementById(
+    "careerHighAVG"
+  ).textContent =
+    formatRate(
+      high.avg.avg
+    );
+
+
+  document.getElementById(
+    "careerHighAVGYear"
+  ).textContent =
+    `${high.avg.year}年`;
+
+
+  document.getElementById(
+    "careerHighHR"
+  ).textContent =
+    high.homeRuns.homeRuns;
+
+
+  document.getElementById(
+    "careerHighHRYear"
+  ).textContent =
+    `${high.homeRuns.year}年`;
+
+
+  document.getElementById(
+    "careerHighRBI"
+  ).textContent =
+    high.rbi.rbi;
+
+
+  document.getElementById(
+    "careerHighRBIYear"
+  ).textContent =
+    `${high.rbi.year}年`;
+
+
+  document.getElementById(
+    "careerHighSB"
+  ).textContent =
+    high.stolenBases.stolenBases;
+
+
+  document.getElementById(
+    "careerHighSBYear"
+  ).textContent =
+    `${high.stolenBases.year}年`;
+
+
+  document.getElementById(
+    "careerHighOPS"
+  ).textContent =
+    formatRate(
+      high.ops.ops
+    );
+
+
+  document.getElementById(
+    "careerHighOPSYear"
+  ).textContent =
+    `${high.ops.year}年`;
+
+}
+
+
+// ========================================
+// グラフ作成
+// ========================================
+
+function renderCharts(
+  seasons
+) {
+
+  const labels =
+    seasons.map(
+      function(season) {
+
+        return season.year;
+
+      }
+    );
+
+
+  const avgData =
+    seasons.map(
+      function(season) {
+
+        return season.avg;
+
+      }
+    );
+
+
+  const hrData =
+    seasons.map(
+      function(season) {
+
+        return season.homeRuns;
+
+      }
+    );
+
+
+  const opsData =
+    seasons.map(
+      function(season) {
+
+        return season.ops;
+
+      }
+    );
+
+
+  // ========================================
+  // 既存グラフを破棄
+  // ========================================
+
+  if (avgChart) {
+
+    avgChart.destroy();
+
+  }
+
+
+  if (hrChart) {
+
+    hrChart.destroy();
+
+  }
+
+
+  if (opsChart) {
+
+    opsChart.destroy();
+
+  }
+
+
+  // ========================================
+  // 打率
+  // ========================================
+
+  avgChart =
+    new Chart(
+      document.getElementById(
+        "avgChart"
+      ),
+      {
+
+        type: "line",
+
+        data: {
+
+          labels,
+
+          datasets: [
+
+            {
+
+              label: "打率",
+
+              data: avgData,
+
+              tension: 0.3
+
+            }
+
+          ]
+
+        },
+
+        options: {
+
+          responsive: true,
+
+          maintainAspectRatio: false,
+
+          scales: {
+
+            y: {
+
+              min: 0,
+
+              max: 0.4,
+
+              ticks: {
+
+                callback:
+                  function(value) {
+
+                    return Number(
+                      value
+                    ).toFixed(3);
+
+                  }
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+    );
+
+
+  // ========================================
+  // 本塁打
+  // ========================================
+
+  hrChart =
+    new Chart(
+      document.getElementById(
+        "hrChart"
+      ),
+      {
+
+        type: "bar",
+
+        data: {
+
+          labels,
+
+          datasets: [
+
+            {
+
+              label: "本塁打",
+
+              data: hrData
+
+            }
+
+          ]
+
+        },
+
+        options: {
+
+          responsive: true,
+
+          maintainAspectRatio: false,
+
+          scales: {
+
+            y: {
+
+              beginAtZero: true
+
+            }
+
+          }
+
+        }
+
+      }
+    );
+
+
+  // ========================================
+  // OPS
+  // ========================================
+
+  opsChart =
+    new Chart(
+      document.getElementById(
+        "opsChart"
+      ),
+      {
+
+        type: "line",
+
+        data: {
+
+          labels,
+
+          datasets: [
+
+            {
+
+              label: "OPS",
+
+              data: opsData,
+
+              tension: 0.3
+
+            }
+
+          ]
+
+        },
+
+        options: {
+
+          responsive: true,
+
+          maintainAspectRatio: false,
+
+          scales: {
+
+            y: {
+
+              min: 0,
+
+              max: 1.2,
+
+              ticks: {
+
+                callback:
+                  function(value) {
+
+                    return Number(
+                      value
+                    ).toFixed(3);
+
+                  }
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+    );
+
+}
+
+
+// ========================================
+// キャリア全体を表示
+// ========================================
+
+function renderCareer(
+  playerId
+) {
 
   const players =
     getPlayers();
@@ -922,8 +1617,10 @@ function renderCareer(playerId) {
     players.find(
       function(p) {
 
-        return p.id ===
-          playerId;
+        return (
+          p.id ===
+          playerId
+        );
 
       }
     );
@@ -932,6 +1629,10 @@ function renderCareer(playerId) {
   if (!player) {
     return;
   }
+
+
+  const seasons =
+    player.seasons || [];
 
 
   document.getElementById(
@@ -946,25 +1647,58 @@ function renderCareer(playerId) {
     `${player.team || "所属なし"}　${player.position}`;
 
 
+  // ========================================
+  // 通算成績
+  // ========================================
+
+  const totals =
+    calculateCareerTotals(
+      seasons
+    );
+
+
+  renderCareerTotals(
+    totals
+  );
+
+
+  // ========================================
+  // キャリアハイ
+  // ========================================
+
+  const high =
+    calculateCareerHigh(
+      seasons
+    );
+
+
+  renderCareerHigh(
+    high
+  );
+
+
+  // ========================================
+  // 年度別表
+  // ========================================
+
   const tbody =
     document.getElementById(
       "careerTableBody"
     );
 
 
-  tbody.innerHTML = "";
+  tbody.innerHTML =
+    "";
 
 
-  const seasons =
-    player.seasons || [];
-
-
-  // 年度がない場合
-
-  if (seasons.length === 0) {
+  if (
+    seasons.length === 0
+  ) {
 
     const row =
-      document.createElement("tr");
+      document.createElement(
+        "tr"
+      );
 
 
     row.innerHTML =
@@ -979,49 +1713,74 @@ function renderCareer(playerId) {
       row
     );
 
+  }
 
-    careerSection.classList.remove(
-      "hidden"
+  else {
+
+    seasons.forEach(
+      function(season) {
+
+        const row =
+          document.createElement(
+            "tr"
+          );
+
+
+        row.innerHTML =
+          `
+            <td>${season.year}</td>
+
+            <td>${season.games}</td>
+
+            <td>
+              ${formatRate(
+                season.avg
+              )}
+            </td>
+
+            <td>
+              ${season.homeRuns}
+            </td>
+
+            <td>
+              ${season.rbi}
+            </td>
+
+            <td>
+              ${season.stolenBases}
+            </td>
+
+            <td>
+              ${formatRate(
+                season.ops
+              )}
+            </td>
+          `;
+
+
+        tbody.appendChild(
+          row
+        );
+
+      }
     );
-
-    return;
 
   }
 
 
-  // 年度別成績
+  // ========================================
+  // グラフ
+  // ========================================
 
-  seasons.forEach(
-    function(season) {
+  if (
+    seasons.length > 0
+  ) {
 
-      const row =
-        document.createElement("tr");
+    renderCharts(
+      seasons
+    );
 
-
-      row.innerHTML =
-        `
-          <td>${season.year}</td>
-
-          <td>${season.games}</td>
-
-          <td>${formatRate(season.avg)}</td>
-
-          <td>${season.homeRuns}</td>
-
-          <td>${season.rbi}</td>
-
-          <td>${season.stolenBases}</td>
-
-          <td>${formatRate(season.ops)}</td>
-        `;
-
-
-      tbody.appendChild(
-        row
-      );
-
-    }
-  );
+  }
 
 
   careerSection.classList.remove(
@@ -1061,6 +1820,35 @@ function backToPlayers() {
   );
 
 
+  // グラフを破棄
+
+  if (avgChart) {
+
+    avgChart.destroy();
+
+    avgChart = null;
+
+  }
+
+
+  if (hrChart) {
+
+    hrChart.destroy();
+
+    hrChart = null;
+
+  }
+
+
+  if (opsChart) {
+
+    opsChart.destroy();
+
+    opsChart = null;
+
+  }
+
+
   clearError();
 
 
@@ -1076,7 +1864,7 @@ function backToPlayers() {
 
 
 // ========================================
-// 年度追加ボタン
+// 年度入力欄を表示
 // ========================================
 
 function showSeasonInput() {
@@ -1094,11 +1882,8 @@ function showSeasonInput() {
 
 
 // ========================================
-// イベント設定
+// イベント
 // ========================================
-
-
-// 新しい選手
 
 document.getElementById(
   "newPlayerButton"
@@ -1108,8 +1893,6 @@ document.getElementById(
 );
 
 
-// 選手保存
-
 document.getElementById(
   "savePlayerButton"
 ).addEventListener(
@@ -1117,8 +1900,6 @@ document.getElementById(
   savePlayer
 );
 
-
-// 年度成績保存
 
 document.getElementById(
   "saveSeasonButton"
@@ -1128,8 +1909,6 @@ document.getElementById(
 );
 
 
-// 年度追加
-
 document.getElementById(
   "addSeasonButton"
 ).addEventListener(
@@ -1138,8 +1917,6 @@ document.getElementById(
 );
 
 
-// 選手一覧へ戻る
-
 document.getElementById(
   "backToPlayersButton"
 ).addEventListener(
@@ -1147,8 +1924,6 @@ document.getElementById(
   backToPlayers
 );
 
-
-// キャンセル
 
 document.getElementById(
   "cancelEditButton"
@@ -1159,237 +1934,7 @@ document.getElementById(
 
 
 // ========================================
-// アプリ起動時
+// 起動
 // ========================================
 
-renderPlayerList();function calculateStats() {
-
-// 基本成績
-const games = getNumber("games");
-const plateAppearances = getNumber("plateAppearances");
-const atBats = getNumber("atBats");
-
-const hits = getNumber("hits");
-const doubles = getNumber("doubles");
-const triples = getNumber("triples");
-const homeRuns = getNumber("homeRuns");
-
-const walks = getNumber("walks");
-const hbp = getNumber("hbp");
-const sacrificeFlies = getNumber("sacrificeFlies");
-
-const rbi = getNumber("rbi");
-const strikeouts = getNumber("strikeouts");
-const stolenBases = getNumber("stolenBases");
-const caughtStealing = getNumber("caughtStealing");
-
-// ----------------------------------------
-// 入力値チェック
-// ----------------------------------------
-
-if (hits > atBats) {
-showError("安打数が打数を超えています。");
-return;
-}
-
-if (doubles + triples + homeRuns > hits) {
-showError(
-"二塁打・三塁打・本塁打の合計が安打数を超えています。"
-);
-return;
-}
-
-if (strikeouts > plateAppearances) {
-showError("三振数が打席数を超えています。");
-return;
-}
-
-if (plateAppearances < atBats) {
-showError("打席数が打数より少なくなっています。");
-return;
-}
-
-// ----------------------------------------
-// 打率 AVG
-// ----------------------------------------
-
-let avg = 0;
-
-if (atBats > 0) {
-avg = hits / atBats;
-}
-
-// ----------------------------------------
-// 単打
-// ----------------------------------------
-
-const singles =
-hits -
-doubles -
-triples -
-homeRuns;
-
-// ----------------------------------------
-// 塁打
-// ----------------------------------------
-
-const totalBases =
-singles +
-doubles * 2 +
-triples * 3 +
-homeRuns * 4;
-
-// ----------------------------------------
-// 長打率 SLG
-// ----------------------------------------
-
-let slg = 0;
-
-if (atBats > 0) {
-slg = totalBases / atBats;
-}
-
-// ----------------------------------------
-// 出塁率 OBP
-// ----------------------------------------
-
-let obp = 0;
-
-const obpDenominator =
-atBats +
-walks +
-hbp +
-sacrificeFlies;
-
-if (obpDenominator > 0) {
-
-obp =
-  (hits + walks + hbp) /
-  obpDenominator;
-
-}
-
-// ----------------------------------------
-// OPS
-// ----------------------------------------
-
-const ops = obp + slg;
-
-// ----------------------------------------
-// 画面に表示
-// ----------------------------------------
-
-displayResult({
-games,
-hits,
-homeRuns,
-rbi,
-stolenBases,
-avg,
-obp,
-slg,
-ops
-});
-
-}
-
-// ----------------------------------------
-// 成績表を表示
-// ----------------------------------------
-
-function displayResult(stats) {
-
-const playerName =
-document.getElementById("playerName").value
-|| "名無しの選手";
-
-const year =
-document.getElementById("year").value
-|| "----";
-
-const team =
-document.getElementById("team").value
-|| "所属なし";
-
-const position =
-document.getElementById("position").value;
-
-// 選手情報
-
-document.getElementById("resultName").textContent =
-playerName;
-
-document.getElementById("resultInfo").textContent =
-"${year}年　${team}　${position}";
-
-// 指標
-
-document.getElementById("resultAVG").textContent =
-formatRate(stats.avg);
-
-document.getElementById("resultOBP").textContent =
-formatRate(stats.obp);
-
-document.getElementById("resultSLG").textContent =
-formatRate(stats.slg);
-
-document.getElementById("resultOPS").textContent =
-formatRate(stats.ops);
-
-// 基本成績
-
-document.getElementById("resultGames").textContent =
-stats.games;
-
-document.getElementById("resultHits").textContent =
-stats.hits;
-
-document.getElementById("resultHR").textContent =
-stats.homeRuns;
-
-document.getElementById("resultRBI").textContent =
-stats.rbi;
-
-document.getElementById("resultSB").textContent =
-stats.stolenBases;
-
-// 成績表を表示
-
-result.classList.remove("hidden");
-
-error.classList.add("hidden");
-
-// スマホで結果まで自動スクロール
-
-result.scrollIntoView({
-behavior: "smooth"
-});
-
-}
-
-// ----------------------------------------
-// エラー表示
-// ----------------------------------------
-
-function showError(message) {
-
-error.textContent = message;
-
-error.classList.remove("hidden");
-
-result.classList.add("hidden");
-
-error.scrollIntoView({
-behavior: "smooth"
-});
-
-}
-
-// ----------------------------------------
-// ボタンを押したときに計算
-// ----------------------------------------
-
-createButton.addEventListener(
-"click",
-calculateStats
-);
+renderPlayerList();
