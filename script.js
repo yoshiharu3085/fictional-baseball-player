@@ -1736,31 +1736,43 @@ const seasons =
         row.innerHTML =
           `
             <td>${season.year}</td>
-
+        
             <td>${season.games}</td>
-
+        
+            <td>${season.atBats}</td>
+        
+            <td>${season.hits}</td>
+        
+            <td>${season.doubles}</td>
+        
+            <td>${season.triples}</td>
+        
+            <td>${season.walks}</td>
+        
+            <td>${season.hbp}</td>
+        
+            <td>${season.sacrificeFlies}</td>
+        
             <td>
               ${formatRate(
                 season.avg
               )}
             </td>
-
-            <td>
-              ${season.homeRuns}
-            </td>
-
-            <td>
-              ${season.rbi}
-            </td>
-
-            <td>
-              ${season.stolenBases}
-            </td>
-
+        
+            <td>${season.homeRuns}</td>
+        
+            <td>${season.rbi}</td>
+        
+            <td>${season.stolenBases}</td>
+        
             <td>
               ${formatRate(
                 season.ops
               )}
+            </td>
+        
+            <td>
+              ${season.war.toFixed(1)}
             </td>
           `;
 
