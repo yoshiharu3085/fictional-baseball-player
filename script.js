@@ -841,6 +841,11 @@ function saveSeason() {
     return;
   }
 
+  // 古いデータとの互換性
+if (!Array.isArray(player.seasons)) {
+  player.seasons = [];
+}
+
 
   const existingIndex =
     player.seasons.findIndex(
@@ -1631,8 +1636,10 @@ function renderCareer(
   }
 
 
-  const seasons =
-    player.seasons || [];
+const seasons =
+  Array.isArray(player.seasons)
+    ? player.seasons
+    : [];
 
 
   document.getElementById(
