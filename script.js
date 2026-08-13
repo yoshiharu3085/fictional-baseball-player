@@ -1770,10 +1770,6 @@ const seasons =
                 season.ops
               )}
             </td>
-        
-            <td>
-              ${season.war.toFixed(1)}
-            </td>
           `;
 
 
