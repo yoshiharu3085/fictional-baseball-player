@@ -1710,7 +1710,7 @@ const seasons =
 
     row.innerHTML =
       `
-        <td colspan="14">
+        <td colspan="15">
           まだ年度成績がありません
         </td>
       `;
@@ -1736,43 +1736,45 @@ const seasons =
 
 
         row.innerHTML =
-          `
-            <td>${season.year}</td>
-
-            <td>${season.games}</td>
-
-            <td>${season.atBats}</td>
-
-            <td>${season.hits}</td>
-
-            <td>${season.doubles}</td>
-
-            <td>${season.triples}</td>
-
-            <td>${season.walks}</td>
-
-            <td>${season.hbp}</td>
-
-            <td>${season.sacrificeFlies}</td>
-
-            <td>
-              ${formatRate(
-                season.avg
-              )}
-            </td>
-
-            <td>${season.homeRuns}</td>
-
-            <td>${season.rbi}</td>
-
-            <td>${season.stolenBases}</td>
-
-            <td>
-              ${formatRate(
-                season.ops
-              )}
-            </td>
-          `;
+        `
+          <td>${season.year}</td>
+      
+          <td>${season.games}</td>
+      
+          <td>${season.atBats}</td>
+      
+          <td>${season.hits}</td>
+      
+          <td>${season.doubles}</td>
+      
+          <td>${season.triples}</td>
+      
+          <td>${season.homeRuns}</td>
+      
+          <td>${season.rbi}</td>
+      
+          <td>${season.walks}</td>
+      
+          <td>${season.hbp}</td>
+      
+          <td>${season.sacrificeFlies}</td>
+      
+          <td>${season.strikeouts}</td>
+      
+          <td>${season.stolenBases}</td>
+      
+          <td>
+            ${formatRate(
+              season.avg
+            )}
+          </td>
+      
+          <td>
+            ${formatRate(
+              season.ops
+            )}
+          </td>
+        `;
 
 
         tbody.appendChild(
@@ -1783,75 +1785,75 @@ const seasons =
     );
 
 
-    // ========================================
-    // 通算成績を一番下に追加
-    // ========================================
+// ========================================
+// 通算成績を一番下に追加
+// ========================================
 
-    const careerTotals =
-      calculateCareerTotals(
-        seasons
-      );
-
-
-    const totalRow =
-      document.createElement(
-        "tr"
-      );
+const careerTotals =
+  calculateCareerTotals(
+    seasons
+  );
 
 
-    totalRow.className =
-      "career-total-row";
+const totalRow =
+  document.createElement(
+    "tr"
+  );
 
 
-    totalRow.innerHTML =
-      `
-        <td><strong>通算</strong></td>
-
-        <td><strong>${careerTotals.games}</strong></td>
-
-        <td><strong>${careerTotals.atBats}</strong></td>
-
-        <td><strong>${careerTotals.hits}</strong></td>
-
-        <td><strong>${careerTotals.doubles}</strong></td>
-
-        <td><strong>${careerTotals.triples}</strong></td>
-
-        <td><strong>${careerTotals.walks}</strong></td>
-
-        <td><strong>${careerTotals.hbp}</strong></td>
-
-        <td><strong>${careerTotals.sacrificeFlies}</strong></td>
-
-        <td>
-          <strong>
-            ${formatRate(
-              careerTotals.avg
-            )}
-          </strong>
-        </td>
-
-        <td><strong>${careerTotals.homeRuns}</strong></td>
-
-        <td><strong>${careerTotals.rbi}</strong></td>
-
-        <td><strong>${careerTotals.stolenBases}</strong></td>
-
-        <td>
-          <strong>
-            ${formatRate(
-              careerTotals.ops
-            )}
-          </strong>
-        </td>
-      `;
+totalRow.className =
+  "career-total-row";
 
 
-    tbody.appendChild(
-      totalRow
-    );
+totalRow.innerHTML =
+  `
+    <td><strong>通算</strong></td>
 
-  }
+    <td><strong>${careerTotals.games}</strong></td>
+
+    <td><strong>${careerTotals.atBats}</strong></td>
+
+    <td><strong>${careerTotals.hits}</strong></td>
+
+    <td><strong>${careerTotals.doubles}</strong></td>
+
+    <td><strong>${careerTotals.triples}</strong></td>
+
+    <td><strong>${careerTotals.homeRuns}</strong></td>
+
+    <td><strong>${careerTotals.rbi}</strong></td>
+
+    <td><strong>${careerTotals.walks}</strong></td>
+
+    <td><strong>${careerTotals.hbp}</strong></td>
+
+    <td><strong>${careerTotals.sacrificeFlies}</strong></td>
+
+    <td><strong>${careerTotals.strikeouts}</strong></td>
+
+    <td><strong>${careerTotals.stolenBases}</strong></td>
+
+    <td>
+      <strong>
+        ${formatRate(
+          careerTotals.avg
+        )}
+      </strong>
+    </td>
+
+    <td>
+      <strong>
+        ${formatRate(
+          careerTotals.ops
+        )}
+      </strong>
+    </td>
+  `;
+
+
+tbody.appendChild(
+  totalRow
+);
 
 
   // ========================================
